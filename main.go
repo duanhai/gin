@@ -125,6 +125,9 @@ func proxy(c *gin.Context) {
 	// body, _ := io.ReadAll(c.Request.Body)
 	// fmt.Println(string(body))
 	// 获取请求体
+	ip := c.Request.RemoteAddr
+	fmt.Print("your ip" + ip)
+
 	rb, err2 := io.ReadAll(c.Request.Body)
 	if err2 != nil {
 		// 处理错误
