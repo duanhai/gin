@@ -131,7 +131,7 @@ func proxy(c *gin.Context) {
 		c.AbortWithStatus(400)
 		return
 	}
-	fmt.Printf("Request Body: %s", string(rb))
+	// fmt.Printf("Request Body: %s", string(rb))
 	var jsonStr = []byte(string(rb))
 	var msg Message
 	err1 := json.Unmarshal(jsonStr, &msg)
@@ -200,6 +200,14 @@ func proxy(c *gin.Context) {
 	c.Stream(func(w io.Writer) bool {
 		// Write data to client
 		io.Copy(w, response.Body)
+		// 打印主体内容
+		bd, _ := io.ReadAll(response.Body)
+		if err != nil {
+			fmt.Println("Error reading response body:", err)
+			return true
+		}
+		fmt.Printf("Body: %s", string(bd))
+
 		return false
 	})
 
