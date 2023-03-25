@@ -200,13 +200,13 @@ func proxy(c *gin.Context) {
 	c.Stream(func(w io.Writer) bool {
 		// Write data to client
 		io.Copy(w, response.Body)
-		// 打印主体内容
-		bd, _ := io.ReadAll(response.Body)
-		if err != nil {
-			fmt.Println("Error reading response body:", err)
-			return true
-		}
-		fmt.Printf("Body: %s", string(bd))
+		// // 打印主体内容
+		// bd, _ := io.ReadAll(response.Body)
+		// if err != nil {
+		// 	fmt.Println("Error reading response body:", err)
+		// 	return true
+		// }
+		// fmt.Printf("Body: %s", string(bd))
 
 		return false
 	})
