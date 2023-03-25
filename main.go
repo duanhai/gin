@@ -16,14 +16,14 @@ import (
 var (
 	jar     = tls_client.NewCookieJar()
 	options = []tls_client.HttpClientOption{
-		tls_client.WithTimeoutSeconds(360),
+		tls_client.WithTimeoutSeconds(3600),
 		tls_client.WithClientProfile(tls_client.Chrome_110),
 		tls_client.WithNotFollowRedirects(),
 		tls_client.WithCookieJar(jar), // create cookieJar instance and pass it as argument
 	}
 	client, _    = tls_client.NewHttpClient(tls_client.NewNoopLogger(), options...)
-	access_token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik1UaEVOVUpHTkVNMVFURTRNMEZCTWpkQ05UZzVNRFUxUlRVd1FVSkRNRU13UmtGRVFrRXpSZyJ9.eyJodHRwczovL2FwaS5vcGVuYWkuY29tL3Byb2ZpbGUiOnsiZW1haWwiOiJkdWFuaGFpMUAxMjYuY29tIiwiZW1haWxfdmVyaWZpZWQiOnRydWV9LCJodHRwczovL2FwaS5vcGVuYWkuY29tL2F1dGgiOnsidXNlcl9pZCI6InVzZXItb01aOHhLTGgwazQwSVE0WFJuQ2lxb1gxIn0sImlzcyI6Imh0dHBzOi8vYXV0aDAub3BlbmFpLmNvbS8iLCJzdWIiOiJhdXRoMHw2M2U0ODc0MjZhYzBiNTFkMGFjNTBmYzkiLCJhdWQiOlsiaHR0cHM6Ly9hcGkub3BlbmFpLmNvbS92MSIsImh0dHBzOi8vb3BlbmFpLm9wZW5haS5hdXRoMGFwcC5jb20vdXNlcmluZm8iXSwiaWF0IjoxNjc4NjI4NjM1LCJleHAiOjE2Nzk4MzgyMzUsImF6cCI6IlRkSkljYmUxNldvVEh0Tjk1bnl5d2g1RTR5T282SXRHIiwic2NvcGUiOiJvcGVuaWQgcHJvZmlsZSBlbWFpbCBtb2RlbC5yZWFkIG1vZGVsLnJlcXVlc3Qgb3JnYW5pemF0aW9uLnJlYWQgb2ZmbGluZV9hY2Nlc3MifQ.mj9DmK1qvChXIjZW-gUhkPF7GajRaTReYs8cicV6poHIiPw_WiMUjJcTKrcYYk9n0wgP6-5bGYeqcXiATNyVwMxP52d3qIIetFp-xfoDlYBDEpqnZ2IAPNofgJT8MLyqjiSVRIO00RVg9wQCTX7GLF8au_zbPXdtYf1SpHEpmahXbUusQ8BNtCrtmtPCYw7GBf20qp1cU_P29kT1uWOwqGWfosYGCVhKviqjm8NVPOkTH-iX5CihkG02ObPqTbL-htb-VbycuVgUZOfotErrJOmA3Vu1todkGoWTVVdNQYq7FlGFdRbGDbxhk1TjW0kKah5czKGbyXGaRG9AnFc3nw"
-	puid         = "user-oMZ8xKLh0k40IQ4XRnCiqoX1:1679717215-a%2FGgXD%2B8d3d8CRJG8az%2FWLjSYnnwp6tcjCcBUR868qI%3D"
+	access_token = os.Getenv("ACCESS_TOKEN")
+	puid         = os.Getenv("PUID")
 )
 
 func main() {
