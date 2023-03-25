@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"time"
 
@@ -122,6 +123,14 @@ func proxy(c *gin.Context) {
 	// //打印请求体
 	// body, _ := io.ReadAll(c.Request.Body)
 	// fmt.Println(string(body))
+	// 获取请求体
+	rb, err2 := ioutil.ReadAll(c.Request.Body)
+	if err2 != nil {
+		// 处理错误
+		c.AbortWithStatus(400)
+		return
+	}
+	fmt.Printf("Request Body: %s", string(rb))
 
 	var url string
 	var err error
@@ -132,7 +141,6 @@ func proxy(c *gin.Context) {
 	url = "https://chat.openai.com/backend-api" + c.Param("path")
 	request_method = c.Request.Method
 	// fmt.Println(url)
-	fmt.Print(c.Request.Body)
 	request, err = http.NewRequest(request_method, url, c.Request.Body)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
