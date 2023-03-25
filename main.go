@@ -163,16 +163,6 @@ func proxy(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	defer response.Body.Close()
-	c.Header("Content-Type", response.Header.Get("Content-Type"))
-	// Get status code
-	c.Status(response.StatusCode)
-	c.Stream(func(w io.Writer) bool {
-		// Write data to client
-		io.Copy(w, response.Body)
-		return false
-	})
-
 	//打印请求体
 	body, _ := io.ReadAll(c.Request.Body)
 	// fmt.Print(string(body))
@@ -189,5 +179,15 @@ func proxy(c *gin.Context) {
 			fmt.Println("Part:", part)
 		}
 	}
+
+	defer response.Body.Close()
+	c.Header("Content-Type", response.Header.Get("Content-Type"))
+	// Get status code
+	c.Status(response.StatusCode)
+	c.Stream(func(w io.Writer) bool {
+		// Write data to client
+		io.Copy(w, response.Body)
+		return false
+	})
 
 }
