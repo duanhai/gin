@@ -26,23 +26,23 @@ var (
 	puid         = os.Getenv("PUID")
 )
 
-type Message struct {
-	Action   string `json:"action"`
-	Messages []struct {
-		ID     string `json:"id"`
-		Author struct {
-			Role string `json:"role"`
-		} `json:"author"`
-		Role    string `json:"role"`
-		Content struct {
-			ContentType string   `json:"content_type"`
-			Parts       []string `json:"parts"`
-		} `json:"content"`
-	} `json:"messages"`
-	ParentMessageID   string `json:"parent_message_id"`
-	Model             string `json:"model"`
-	TimezoneOffsetMin int    `json:"timezone_offset_min"`
-}
+// type Message struct {
+// 	Action   string `json:"action"`
+// 	Messages []struct {
+// 		ID     string `json:"id"`
+// 		Author struct {
+// 			Role string `json:"role"`
+// 		} `json:"author"`
+// 		Role    string `json:"role"`
+// 		Content struct {
+// 			ContentType string   `json:"content_type"`
+// 			Parts       []string `json:"parts"`
+// 		} `json:"content"`
+// 	} `json:"messages"`
+// 	ParentMessageID   string `json:"parent_message_id"`
+// 	Model             string `json:"model"`
+// 	TimezoneOffsetMin int    `json:"timezone_offset_min"`
+// }
 
 func main() {
 	if access_token == "" && puid == "" {
@@ -135,8 +135,12 @@ func proxy(c *gin.Context) {
 	}
 
 	//打印请求体
-	body, _ := io.ReadAll(c.Request.Body)
-	fmt.Print("reqbody" + string(body))
+	body, err2 := io.ReadAll(c.Request.Body)
+	if err2 != nil {
+		fmt.Print(err2)
+	} else {
+		fmt.Print(string(body))
+	}
 
 	request.Header.Set("Host", "chat.openai.com")
 	request.Header.Set("Origin", "https://chat.openai.com/chat")
