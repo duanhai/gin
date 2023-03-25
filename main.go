@@ -134,22 +134,6 @@ func proxy(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-	//打印请求体
-	body, _ := io.ReadAll(c.Request.Body)
-	// fmt.Print(string(body))
-	var jsonStr = []byte(string(body))
-	var msg Message
-	err1 := json.Unmarshal(jsonStr, &msg)
-	if err1 != nil {
-		fmt.Println("Error parsing JSON:", err)
-		return
-	}
-
-	for _, m := range msg.Messages {
-		for _, part := range m.Content.Parts {
-			fmt.Println("Part:", part)
-		}
-	}
 
 	request.Header.Set("Host", "chat.openai.com")
 	request.Header.Set("Origin", "https://chat.openai.com/chat")
@@ -188,5 +172,22 @@ func proxy(c *gin.Context) {
 		io.Copy(w, response.Body)
 		return false
 	})
+
+	//打印请求体
+	body, _ := io.ReadAll(c.Request.Body)
+	// fmt.Print(string(body))
+	var jsonStr = []byte(string(body))
+	var msg Message
+	err1 := json.Unmarshal(jsonStr, &msg)
+	if err1 != nil {
+		fmt.Println("Error parsing JSON:", err)
+		return
+	}
+
+	for _, m := range msg.Messages {
+		for _, part := range m.Content.Parts {
+			fmt.Println("Part:", part)
+		}
+	}
 
 }
