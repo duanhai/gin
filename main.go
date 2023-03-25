@@ -37,14 +37,14 @@ func main() {
 			url := "https://chat.openai.com/backend-api/models"
 			req, _ := http.NewRequest(http.MethodGet, url, nil)
 			req.Header.Set("Host", "chat.openai.com")
-			req.Header.Set("origin", "https://chat.openai.com/chat")
+			req.Header.Set("origin", "https://chat.openai.com")
 			req.Header.Set("referer", "https://chat.openai.com/chat")
-			req.Header.Set("sec-ch-ua", `Chromium";v="110", "Not A(Brand";v="24", "Brave";v="110`)
-			req.Header.Set("sec-ch-ua-platform", "Linux")
+			req.Header.Set("sec-ch-ua", `Google Chrome";v="111", "Not(A:Brand";v="8", "Chromium";v="111"`)
+			req.Header.Set("sec-ch-ua-platform", "macOS")
 			req.Header.Set("content-type", "application/json")
 			req.Header.Set("content-type", "application/json")
 			req.Header.Set("accept", "text/event-stream")
-			req.Header.Set("user-agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36")
+			req.Header.Set("user-agent", "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36")
 			// Set authorization header
 			req.Header.Set("Authorization", "Bearer "+access_token)
 			// Initial puid cookie
