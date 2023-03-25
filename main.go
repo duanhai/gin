@@ -119,6 +119,10 @@ func main() {
 
 func proxy(c *gin.Context) {
 
+	//打印请求体
+	body, _ := io.ReadAll(c.Request.Body)
+	fmt.Println(string(body))
+
 	var url string
 	var err error
 	var request_method string
@@ -132,14 +136,6 @@ func proxy(c *gin.Context) {
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
-	}
-
-	//打印请求体
-	body, err2 := io.ReadAll(c.Request.Body)
-	if err2 != nil {
-		fmt.Print(err2)
-	} else {
-		fmt.Print(string(body))
 	}
 
 	request.Header.Set("Host", "chat.openai.com")
