@@ -109,15 +109,15 @@ func proxy(c *gin.Context) {
 
 	url = "https://chat.openai.com/backend-api" + c.Param("path")
 	request_method = c.Request.Method
-
+	fmt.Println(url)
 	request, err = http.NewRequest(request_method, url, c.Request.Body)
 	if err != nil {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
 	//打印请求体
-	body, _ := io.ReadAll(c.Request.Body)
-	fmt.Print(string(body))
+	// body, _ := io.ReadAll(c.Request.Body)
+	// fmt.Print(string(body))
 	request.Header.Set("Host", "chat.openai.com")
 	request.Header.Set("Origin", "https://chat.openai.com/chat")
 	request.Header.Set("Content-Type", "application/json")
