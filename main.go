@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	"io"
 	"io/ioutil"
@@ -131,6 +132,8 @@ func proxy(c *gin.Context) {
 		return
 	}
 	fmt.Printf("Request Body: %s", string(rb))
+	// 将HTTP请求体重新放回到请求中
+	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(rb))
 
 	var url string
 	var err error
