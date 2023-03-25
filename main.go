@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"io"
 	"os"
 	"time"
@@ -114,6 +115,9 @@ func proxy(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
+	//打印请求体
+	body, _ := io.ReadAll(c.Request.Body)
+	fmt.Print(string(body))
 	request.Header.Set("Host", "chat.openai.com")
 	request.Header.Set("Origin", "https://chat.openai.com/chat")
 	request.Header.Set("Content-Type", "application/json")
