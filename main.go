@@ -2,9 +2,9 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"os"
 	"time"
 
@@ -28,23 +28,23 @@ var (
 	puid         = os.Getenv("PUID")
 )
 
-// type Message struct {
-// 	Action   string `json:"action"`
-// 	Messages []struct {
-// 		ID     string `json:"id"`
-// 		Author struct {
-// 			Role string `json:"role"`
-// 		} `json:"author"`
-// 		Role    string `json:"role"`
-// 		Content struct {
-// 			ContentType string   `json:"content_type"`
-// 			Parts       []string `json:"parts"`
-// 		} `json:"content"`
-// 	} `json:"messages"`
-// 	ParentMessageID   string `json:"parent_message_id"`
-// 	Model             string `json:"model"`
-// 	TimezoneOffsetMin int    `json:"timezone_offset_min"`
-// }
+type Message struct {
+	Action   string `json:"action"`
+	Messages []struct {
+		ID     string `json:"id"`
+		Author struct {
+			Role string `json:"role"`
+		} `json:"author"`
+		Role    string `json:"role"`
+		Content struct {
+			ContentType string   `json:"content_type"`
+			Parts       []string `json:"parts"`
+		} `json:"content"`
+	} `json:"messages"`
+	ParentMessageID   string `json:"parent_message_id"`
+	Model             string `json:"model"`
+	TimezoneOffsetMin int    `json:"timezone_offset_min"`
+}
 
 func main() {
 	if access_token == "" && puid == "" {
@@ -125,15 +125,29 @@ func proxy(c *gin.Context) {
 	// body, _ := io.ReadAll(c.Request.Body)
 	// fmt.Println(string(body))
 	// 获取请求体
-	rb, err2 := ioutil.ReadAll(c.Request.Body)
+	rb, err2 := io.ReadAll(c.Request.Body)
 	if err2 != nil {
 		// 处理错误
 		c.AbortWithStatus(400)
 		return
 	}
 	fmt.Printf("Request Body: %s", string(rb))
+	var jsonStr = []byte(string(rb))
+	var msg Message
+	err1 := json.Unmarshal(jsonStr, &msg)
+	if err1 != nil {
+		fmt.Println("Error parsing JSON:", err1)
+		return
+	}
+
+	for _, m := range msg.Messages {
+		for _, part := range m.Content.Parts {
+			fmt.Println("User Part:", part)
+		}
+	}
+
 	// 将HTTP请求体重新放回到请求中
-	c.Request.Body = ioutil.NopCloser(bytes.NewBuffer(rb))
+	c.Request.Body = io.NopCloser(bytes.NewBuffer(rb))
 
 	var url string
 	var err error
@@ -178,20 +192,6 @@ func proxy(c *gin.Context) {
 		c.JSON(500, gin.H{"error": err.Error()})
 		return
 	}
-
-	// var jsonStr = []byte(string(body))
-	// var msg Message
-	// err1 := json.Unmarshal(jsonStr, &msg)
-	// if err1 != nil {
-	// 	fmt.Println("Error parsing JSON:", err)
-	// 	return
-	// }
-
-	// for _, m := range msg.Messages {
-	// 	for _, part := range m.Content.Parts {
-	// 		fmt.Println("Part:", part)
-	// 	}
-	// }
 
 	defer response.Body.Close()
 	c.Header("Content-Type", response.Header.Get("Content-Type"))
