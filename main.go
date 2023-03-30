@@ -112,7 +112,7 @@ func main() {
 	handler := gin.Default()
 	handler.GET("/ping", func(c *gin.Context) {
 		cIp := c.Request.RemoteAddr
-		remoteIp := c.Request.Header.Get("X-Real-IP")
+		remoteIp := c.ClientIP()
 		c.JSON(200, gin.H{"message": "pong", "cIp": cIp, "remoteIp": remoteIp})
 	})
 
