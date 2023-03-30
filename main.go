@@ -111,7 +111,8 @@ func main() {
 	}
 	handler := gin.Default()
 	handler.GET("/ping", func(c *gin.Context) {
-		c.JSON(200, gin.H{"message": "pong"})
+		cIp := c.Request.RemoteAddr
+		c.JSON(200, gin.H{"message": "pong", "cIp": cIp})
 	})
 
 	handler.Any("/api/*path", proxy)
